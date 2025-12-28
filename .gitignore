@@ -8,3 +8,7 @@ env/
 
 # User settings (Privacy protection)
 user_settings.json
+
+build/
+dist/
+JobAutoFiller.spec
