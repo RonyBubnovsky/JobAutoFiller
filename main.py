@@ -66,12 +66,50 @@ class AutoApplierGUI:
         url_frame = tk.Frame(main_frame)
         url_frame.pack(fill="x", pady=5)
         tk.Label(url_frame, text="Job Link:", font=("Segoe UI", 10, "bold")).pack(anchor="w")
-        tk.Entry(url_frame, textvariable=self.job_url, bg="#f0f8ff").pack(fill="x", pady=5)
+        
+        # Create entry with explicit clipboard support
+        self.job_url_entry = tk.Entry(url_frame, textvariable=self.job_url, bg="#f0f8ff")
+        self.job_url_entry.pack(fill="x", pady=5)
+        
+        # Bind Ctrl+V explicitly for paste support
+        self.job_url_entry.bind('<Control-v>', self.paste_to_entry)
+        self.job_url_entry.bind('<Control-V>', self.paste_to_entry)
+        # Also bind right-click menu
+        self.job_url_entry.bind('<Button-3>', self.show_paste_menu)
 
         # Run button
         btn = tk.Button(main_frame, text="Open & Fill Form", command=self.run_bot, 
                         bg="#4CAF50", fg="white", font=("Segoe UI", 11, "bold"), height=2)
         btn.pack(fill="x", pady=20)
+
+    def paste_to_entry(self, event=None):
+        """Handle paste operation explicitly."""
+        try:
+            # Get clipboard content
+            clipboard_text = self.root.clipboard_get()
+            # Get the widget that triggered the event
+            widget = event.widget if event else self.job_url_entry
+            # Delete selected text if any
+            try:
+                widget.delete("sel.first", "sel.last")
+            except tk.TclError:
+                pass  # No selection
+            # Insert clipboard content at cursor position
+            widget.insert("insert", clipboard_text)
+            return "break"  # Prevent default handling
+        except tk.TclError:
+            pass  # Clipboard empty or unavailable
+        return "break"
+
+    def show_paste_menu(self, event):
+        """Show right-click context menu with paste option."""
+        menu = tk.Menu(self.root, tearoff=0)
+        menu.add_command(label="Paste", command=lambda: self.paste_to_entry())
+        menu.add_command(label="Clear", command=lambda: self.job_url.set(""))
+        try:
+            menu.tk_popup(event.x_root, event.y_root)
+        finally:
+            menu.grab_release()
 
     def browse_file(self):
         """Opens file dialog to select resume."""
