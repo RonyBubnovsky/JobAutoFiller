@@ -23,6 +23,17 @@ The tool saves your personal details locally and uses a graphical interface (GUI
 
 ## Installation
 
+### Option 1: Download Executable (Recommended)
+
+Download the latest version from the [Releases](https://github.com/RonyBubnovsky/JobAutoFiller/releases) page:
+
+- **Windows**: Download `JobAutoFiller.exe`
+- **Mac**: Download `JobAutoFiller-Mac.zip`
+
+No installation required - just run the executable.
+
+### Option 2: Run from Source
+
 1.  **Clone the repository:**
 
     ```bash
