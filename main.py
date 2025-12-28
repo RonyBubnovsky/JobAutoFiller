@@ -54,20 +54,17 @@ class AutoApplierGUI:
             row_frame = tk.Frame(main_frame)
             row_frame.pack(fill="x", pady=2)
             
-            # Create label with asterisk for required fields
-            if label_text in self.required_fields:
-                display_text = f"{label_text} *"
-            else:
-                display_text = label_text
-            
-            lbl = tk.Label(row_frame, text=display_text, width=18, anchor="w")
+            # Label with fixed width for alignment
+            lbl = tk.Label(row_frame, text=label_text, width=16, anchor="w")
             lbl.pack(side="left")
             
-            # Color the asterisk red by using a separate label
+            # Red asterisk for required fields, space placeholder for non-required
             if label_text in self.required_fields:
-                lbl.config(text=label_text)
                 asterisk = tk.Label(row_frame, text="*", fg="red", font=("Segoe UI", 10, "bold"))
-                asterisk.pack(side="left", padx=(0, 5))
+            else:
+                asterisk = tk.Label(row_frame, text=" ")
+            asterisk.config(width=2, anchor="w")
+            asterisk.pack(side="left")
             
             if label_text == "Resume Path":
                 tk.Entry(row_frame, textvariable=var).pack(side="left", fill="x", expand=True, padx=5)
