@@ -26,7 +26,7 @@ The tool saves your personal details locally and uses a graphical interface (GUI
 1.  **Clone the repository:**
 
     ```bash
-    git clone [https://github.com/RonyBubnovsky/JobAutoFiller.git](https://github.com/RonyBubnovsky/JobAutoFiller.git)
+    git clone https://github.com/RonyBubnovsky/JobAutoFiller.git
     cd JobAutoFiller
     ```
 
