@@ -46,12 +46,28 @@ class AutoApplierGUI:
         # Title
         tk.Label(main_frame, text="Candidate Settings", font=("Segoe UI", 12, "bold")).pack(pady=(0, 15))
 
+        # Define required fields
+        self.required_fields = ["First Name", "Last Name", "Email", "Phone", "Resume Path"]
+
         # Create input fields
         for label_text, var in self.form_data.items():
             row_frame = tk.Frame(main_frame)
             row_frame.pack(fill="x", pady=2)
             
-            tk.Label(row_frame, text=label_text, width=15, anchor="w").pack(side="left")
+            # Create label with asterisk for required fields
+            if label_text in self.required_fields:
+                display_text = f"{label_text} *"
+            else:
+                display_text = label_text
+            
+            lbl = tk.Label(row_frame, text=display_text, width=18, anchor="w")
+            lbl.pack(side="left")
+            
+            # Color the asterisk red by using a separate label
+            if label_text in self.required_fields:
+                lbl.config(text=label_text)
+                asterisk = tk.Label(row_frame, text="*", fg="red", font=("Segoe UI", 10, "bold"))
+                asterisk.pack(side="left", padx=(0, 5))
             
             if label_text == "Resume Path":
                 tk.Entry(row_frame, textvariable=var).pack(side="left", fill="x", expand=True, padx=5)
@@ -138,8 +154,24 @@ class AutoApplierGUI:
         except Exception as e:
             messagebox.showerror("Error", f"Could not save settings: {e}")
 
+    def validate_required_fields(self):
+        """Check that all required fields are filled."""
+        missing_fields = []
+        for field_name in self.required_fields:
+            value = self.form_data[field_name].get().strip()
+            if not value:
+                missing_fields.append(field_name)
+        return missing_fields
+
     def run_bot(self):
         """Main automation logic."""
+        # Validate required fields
+        missing = self.validate_required_fields()
+        if missing:
+            fields_list = "\n- ".join(missing)
+            messagebox.showwarning("Missing Required Fields", f"Please fill in the following required fields:\n- {fields_list}")
+            return
+        
         url = self.job_url.get()
         if not url:
             messagebox.showwarning("Missing Info", "Please enter a Job URL")
