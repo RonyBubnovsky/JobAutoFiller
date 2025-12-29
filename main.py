@@ -3,13 +3,13 @@
 JobAutoFiller - Automate job application form filling on Comeet platforms.
 """
 
-import tkinter as tk
+import customtkinter as ctk
 from src.gui import AutoApplierGUI
 
 
 def main():
     """Entry point for the application."""
-    root = tk.Tk()
+    root = ctk.CTk()
     AutoApplierGUI(root)
     root.mainloop()
 
